@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Algebraic Identities — Chapter 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f7f7f5;color:#1a1a2e;min-height:100vh}
+button{font-family:'DM Sans',sans-serif;cursor:pointer}
+
+/* ── HOME ── */
+#home{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem 1rem;text-align:center}
+.home-tag{font-size:11px;font-weight:700;letter-spacing:.12em;color:#534AB7;text-transform:uppercase;margin-bottom:12px}
+.home-h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);color:#1a1a2e;margin-bottom:12px}
+.home-sub{font-size:15px;color:#778;max-width:480px;margin:0 auto 2.5rem;line-height:1.6}
+.ch-list{display:flex;flex-direction:column;gap:14px;width:100%;max-width:560px}
+.ch-card{background:#fff;border:1.5px solid #e5e5e8;border-radius:18px;padding:1.4rem 1.6rem;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;box-shadow:0 2px 12px rgba(0,0,0,.04);transition:box-shadow .2s,transform .15s}
+.ch-card:hover{box-shadow:0 6px 28px rgba(83,74,183,.13);transform:translateY(-1px)}
+.ch-card:active{transform:scale(.98)}
+.ch-tag{font-size:11px;font-weight:700;letter-spacing:.1em;color:#534AB7;text-transform:uppercase;margin-bottom:6px}
+.ch-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:#1a1a2e;margin-bottom:4px;line-height:1.3}
+.ch-sub{font-size:13px;color:#888}
+.ch-arrow{background:#EEEDFE;border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#534AB7;flex-shrink:0}
+
+/* ── LESSON SHELL ── */
+#lesson{display:none;flex-direction:column;min-height:100vh}
+.top-bar{position:sticky;top:0;z-index:40;background:rgba(247,247,245,.92);backdrop-filter:blur(14px);border-bottom:1px solid #e5e5e8}
+.top-inner{max-width:720px;margin:0 auto;padding:0 16px}
+.chip-row{display:flex;align-items:center;gap:10px;height:48px;overflow-x:auto;scrollbar-width:none}
+.chip-row::-webkit-scrollbar{display:none}
+.back-btn{background:none;border:none;font-size:18px;color:#534AB7;padding:4px 8px;border-radius:8px;flex-shrink:0}
+.fchip{background:#fff;border:1.5px solid #e5e5e8;border-radius:20px;padding:4px 12px;font-size:12px;color:#666;white-space:nowrap;flex-shrink:0;transition:all .2s}
+.fchip.on{background:#EEEDFE;border-color:#AFA9EC;color:#3C3489;font-weight:700}
+.dot-row{display:flex;gap:6px;padding-bottom:10px;align-items:center}
+.pdot{height:9px;border-radius:5px;border:none;background:#d4d4d8;padding:0;transition:all .25s;cursor:pointer}
+.pdot.active{background:#534AB7;width:24px}
+.pdot.done{background:#534AB7;opacity:.4}
+.pdot.sum{background:#d4d4d8}
+.pdot.sum.active{background:#5DCAA5;width:24px}
+.pdot.sum.done{background:#5DCAA5;opacity:.5}
+
+/* ── CARD ── */
+.content{max-width:720px;margin:0 auto;padding:24px 16px 80px}
+.card{display:none}
+.card.active{display:block}
+
+/* lesson header */
+.lhdr{display:flex;gap:16px;align-items:flex-start;margin-bottom:22px}
+.lnum{width:52px;height:52px;border-radius:50%;background:#EEEDFE;border:2px solid #AFA9EC;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:18px;color:#534AB7;flex-shrink:0}
+.ltitle{font-family:'Playfair Display',serif;font-size:clamp(1.25rem,3vw,1.7rem);font-weight:700;color:#1a1a2e;margin-bottom:6px}
+.lconcept{font-size:14px;color:#667;line-height:1.6}
+
+/* formula boxes */
+.fbox{border-radius:12px;padding:14px 18px;margin-bottom:10px}
+.fbox .flbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+.fbox .ftext{font-family:monospace;font-size:15px;font-weight:700;margin-bottom:4px}
+.fbox .fmean{font-size:12px}
+.fbox-0{background:#EEEDFE;border:1.5px solid #AFA9EC;border-left:5px solid #AFA9EC}
+.fbox-0 .flbl,.fbox-0 .fmean{color:#534AB7}.fbox-0 .ftext{color:#3C3489}
+.fbox-1{background:#FAEEDA;border:1.5px solid #EF9F27;border-left:5px solid #EF9F27}
+.fbox-1 .flbl,.fbox-1 .fmean{color:#854F0B}.fbox-1 .ftext{color:#633806}
+.fbox-2{background:#E1F5EE;border:1.5px solid #5DCAA5;border-left:5px solid #5DCAA5}
+.fbox-2 .flbl,.fbox-2 .fmean{color:#0F6E56}.fbox-2 .ftext{color:#085041}
+.fbox-3{background:#FAECE7;border:1.5px solid #F0997B;border-left:5px solid #F0997B}
+.fbox-3 .flbl,.fbox-3 .fmean{color:#993C1D}.fbox-3 .ftext{color:#712B13}
+.fbox-4{background:#E6F1FB;border:1.5px solid #85B7EB;border-left:5px solid #85B7EB}
+.fbox-4 .flbl,.fbox-4 .fmean{color:#185FA5}.fbox-4 .ftext{color:#0C447C}
+
+/* visual */
+.vis{margin:18px 0;overflow-x:auto}
+.vis svg{max-width:100%;height:auto}
+
+/* worked example */
+.ex-box{background:#fff;border:1.5px solid #e5e5e8;border-radius:16px;padding:20px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.ex-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;color:#534AB7;text-transform:uppercase;margin-bottom:10px}
+.ex-q{font-size:16px;font-weight:600;color:#1a1a2e;margin-bottom:14px}
+.step{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;opacity:0;transform:translateX(-12px);transition:opacity .3s,transform .3s}
+.step.vis2{opacity:1;transform:none}
+.sarr{color:#AFA9EC;font-size:14px;font-weight:700;margin-top:1px;flex-shrink:0;width:16px}
+.stxt{font-family:monospace;font-size:14px;color:#333;line-height:1.5}
+.abadge{display:inline-block;background:#EEEDFE;color:#3C3489;border:1.5px solid #AFA9EC;border-radius:20px;padding:6px 16px;font-size:14px;font-weight:700;font-family:monospace}
+
+/* practice questions */
+.qlbl{font-size:11px;font-weight:700;letter-spacing:.1em;color:#667;text-transform:uppercase;margin-bottom:12px}
+.qi{border:1.5px solid #e8e8ec;border-radius:12px;overflow:hidden;margin-bottom:10px}
+.qh{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#fff;border:none;width:100%;text-align:left;cursor:pointer;transition:background .15s}
+.qh:hover{background:#fafaf8}
+.qi.open .qh{background:#f7f6ff}
+.qn{background:#EEEDFE;color:#534AB7;border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.qtxt{flex:1;font-size:14px;color:#333;font-weight:500}
+.qtog{font-size:18px;color:#888;transition:transform .2s}
+.qi.open .qtog{transform:rotate(180deg)}
+.qb{max-height:0;overflow:hidden;transition:max-height .28s ease}
+.qi.open .qb{max-height:600px}
+.qb-inner{padding:12px 16px 16px;background:#fafaf8;border-top:1px solid #eee}
+.qhint{background:#FAEEDA;border-left:3px solid #EF9F27;padding:8px 12px;border-radius:8px;font-size:13px;color:#633806;margin-bottom:12px}
+.qstep{display:flex;gap:10px;margin-bottom:6px}
+.qsn{color:#888;font-size:12px;font-weight:700;margin-top:1px;flex-shrink:0}
+.qst{font-family:monospace;font-size:13px;color:#333}
+.qans{display:inline-block;background:#E1F5EE;color:#085041;border:1.5px solid #5DCAA5;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:700;margin-top:6px}
+
+/* nav */
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:8px;flex-wrap:wrap}
+.nbtn{border:1.5px solid #e5e5e8;background:#fff;border-radius:28px;padding:12px 24px;font-size:15px;color:#333;font-weight:500;transition:all .15s}
+.nbtn:hover{background:#f5f5f5}
+.nbtn:disabled{opacity:.4;cursor:not-allowed}
+.nbtn.pri{background:#534AB7;border-color:#534AB7;color:#fff;font-weight:600}
+.nbtn.pri:hover{background:#3C3489}
+
+/* summary */
+.sum{text-align:center;margin-bottom:32px}
+.sum-ico{width:72px;height:72px;border-radius:50%;background:#E1F5EE;border:2px solid #5DCAA5;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px}
+.sum h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:#1a1a2e;margin-bottom:8px}
+.sum p{color:#667;font-size:15px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:24px 0 32px;text-align:left}
+.fsc{background:#fff;border:1.5px solid #e5e5e8;border-radius:12px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.fn{font-size:11px;font-weight:700;color:#534AB7;margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em}
+.ff{font-family:monospace;font-size:13px;color:#333}
+.sum-nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+@media(max-width:480px){
+  .lhdr{gap:10px}
+  .lnum{width:42px;height:42px;font-size:15px}
+  .ltitle{font-size:1.1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="home">
+  <div class="home-tag">Algebra · Chapter 3</div>
+  <h1 class="home-h1">Algebraic Identities</h1>
+  <p class="home-sub">Step-by-step worked examples, animated reveals, and practice questions for every lesson.</p>
+  <div class="ch-list">
+    <button class="ch-card" onclick="openChapter(0)">
+      <div>
+        <div class="ch-tag">Chapter 3.1</div>
+        <div class="ch-title">Algebraic Identities &amp; Their Applications</div>
+        <div class="ch-sub">10 lessons · step-by-step animations</div>
+      </div>
+      <div class="ch-arrow">→</div>
+    </button>
+    <button class="ch-card" onclick="openChapter(1)">
+      <div>
+        <div class="ch-tag">Chapter 3.2</div>
+        <div class="ch-title">Formulae of Cubes &amp; Their Applications</div>
+        <div class="ch-sub">9 lessons · step-by-step animations</div>
+      </div>
+      <div class="ch-arrow">→</div>
+    </button>
+  </div>
+</div>
+
+<!-- LESSON VIEW -->
+<div id="lesson">
+  <div class="top-bar">
+    <div class="top-inner">
+      <div class="chip-row" id="chipRow"></div>
+      <div class="dot-row" id="dotRow"></div>
+    </div>
+  </div>
+  <div class="content" id="lessonContent"></div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+//  DATA
+// ─────────────────────────────────────────────
+const CHAPTERS = [
+{
+  tag:"Chapter 3.1", title:"Algebraic Identities & Their Applications",
+  chips:["(a+b)²","(a−b)²","(a+b+c)²","a²−b²","ab as □−□","(a+b)²=(a−b)²+4ab"],
+  summary:[
+    {n:"(a+b)²",f:"a² + 2ab + b²"},{n:"(a−b)²",f:"a² − 2ab + b²"},
+    {n:"(a+b+c)²",f:"a²+b²+c²+2ab+2bc+2ca"},{n:"a²−b²",f:"(a+b)(a−b)"},
+    {n:"(a+b)² corollary",f:"(a−b)² + 4ab"},{n:"a²+b²+c²",f:"(a+b+c)² − 2(ab+bc+ca)"},
+    {n:"ab as □−□",f:"((a+b)/2)² − ((a−b)/2)²"},{n:"a⁴+a²b²+b⁴",f:"(a²+ab+b²)(a²−ab+b²)"},
+  ],
+  lessons:[
+    {num:"01",title:"Square of a Binomial",concept:"When we square two terms together, we multiply the expression by itself. That creates the square of the first term, two middle product terms, and the square of the second term.",
+    formulas:["(a + b)² = a² + 2ab + b²","(a − b)² = a² − 2ab + b²"],meanings:["Square of first + twice product + square of second","Square of first − twice product + square of second"],
+    vis:"binomial",
+    ex:{q:"Expand (a + b)²",steps:["(a + b)² = (a + b)(a + b)","= a·a + a·b + b·a + b·b","= a² + ab + ab + b²","= a² + 2ab + b²"],ans:"a² + 2ab + b²"},
+    qs:[
+      {q:"Square of (4x + 5y)?",h:"Use (a+b)²: a = 4x, b = 5y",s:["(4x+5y)² = (4x)² + 2×(4x)×(5y) + (5y)²","= 16x² + 40xy + 25y²"],a:"16x² + 40xy + 25y²"},
+      {q:"Square of (3a − 7b)?",h:"Use (a−b)²: a = 3a, b = 7b",s:["(3a−7b)² = (3a)² − 2×(3a)×(7b) + (7b)²","= 9a² − 42ab + 49b²"],a:"9a² − 42ab + 49b²"},
+      {q:"Square of (2a + 3b)?",h:"Direct use of (a+b)²",s:["(2a+3b)² = (2a)² + 2×(2a)×(3b) + (3b)²","= 4a² + 12ab + 9b²"],a:"4a² + 12ab + 9b²"},
+      {q:"Square of (x² + 2/y²)?",h:"Treat x² as one term, 2/y² as the other",s:["= (x²)² + 2×(x²)×(2/y²) + (2/y²)²","= x⁴ + 4x²/y² + 4/y⁴"],a:"x⁴ + 4x²/y² + 4/y⁴"},
+      {q:"Square of (4y − 5x)?",h:"Use (a−b)²",s:["(4y−5x)² = (4y)² − 2×(4y)×(5x) + (5x)²","= 16y² − 40xy + 25x²"],a:"16y² − 40xy + 25x²"},
+      {q:"Square of (5x² − y)?",h:"Treat 5x² as first term, y as second",s:["(5x²−y)² = (5x²)² − 2×(5x²)×(y) + (y)²","= 25x⁴ − 10x²y + y²"],a:"25x⁴ − 10x²y + y²"}
+    ]},
+    {num:"02",title:"Square of Three or More Terms",concept:"When there are three or more terms, square each term and add twice the product of every pair of different terms.",
+    formulas:["(a+b+c)² = a²+b²+c²+2ab+2bc+2ca","(a+b+c+d)² = a²+b²+c²+d²+2ab+2ac+2ad+2bc+2bd+2cd"],meanings:["Square each, add twice every pair","Square each of four, add twice every pair"],
+    vis:"trinomial",
+    ex:{q:"Expand (a + b + c)²",steps:["Think: square each term, add twice each pair","= a² + b² + c² + 2ab + 2bc + 2ca"],ans:"a² + b² + c² + 2ab + 2bc + 2ca"},
+    qs:[
+      {q:"Square of (a + b + c + d)?",h:"Group as (a+b) + (c+d), then expand",s:["= {(a+b)+(c+d)}²","= (a+b)² + 2(a+b)(c+d) + (c+d)²","= a²+2ab+b² + 2(ac+ad+bc+bd) + c²+2cd+d²","= a²+b²+c²+d²+2ab+2ac+2ad+2bc+2bd+2cd"],a:"a²+b²+c²+d²+2ab+2ac+2ad+2bc+2bd+2cd"},
+      {q:"Square of (3b − 5c − 2a)?",h:"Three terms: 3b, −5c, −2a. Apply trinomial formula.",s:["= (3b)²+(−5c)²+(−2a)²+2(3b)(−5c)+2(−5c)(−2a)+2(3b)(−2a)","= 9b²+25c²+4a²−30bc+20ac−12ab"],a:"9b²+25c²+4a²−30bc+20ac−12ab"},
+      {q:"Square of (ax − by − cz)?",h:"Treat ax, −by, −cz as three terms",s:["= (ax)²+(−by)²+(−cz)²+2(ax)(−by)+2(−by)(−cz)+2(ax)(−cz)","= a²x²+b²y²+c²z²−2abxy+2bcyz−2acxz"],a:"a²x²+b²y²+c²z²−2abxy+2bcyz−2acxz"},
+      {q:"Square of (2a + 3x − 2y − 5z)?",h:"Group as (2a+3x) + (−2y−5z), then expand",s:["= (2a+3x)² + 2(2a+3x)(−2y−5z) + (−2y−5z)²","= 4a²+12ax+9x²−8ay−20az−12xy−30xz+4y²+20yz+25z²"],a:"4a²+9x²+4y²+25z²+12ax−8ay−20az−12xy−30xz+20yz"}
+    ]},
+    {num:"03",title:"Mental Math Squares",concept:"Sometimes a number is close to a round number like 1000. Rewrite it and use a square formula to calculate fast — no long multiplication needed!",
+    formulas:["(a + b)² = a² + 2ab + b²","(a − b)² = a² − 2ab + b²"],meanings:["For numbers just above a round number","For numbers just below a round number"],
+    vis:"mental",
+    ex:{q:"Find 102² quickly",steps:["102 = 100 + 2","(102)² = (100+2)² = 100² + 2×100×2 + 2²","= 10000 + 400 + 4","= 10404"],ans:"10,404"},
+    qs:[
+      {q:"Find (996)² using identity.",h:"996 = 1000 − 4, use (a−b)²",s:["(996)² = (1000−4)² = 1000² − 2×1000×4 + 4²","= 1000000 − 8000 + 16","= 992016"],a:"992,016"},
+      {q:"Find (1007)².",h:"1007 = 1000 + 7, use (a+b)²",s:["(1007)² = (1000+7)² = 1000² + 2×1000×7 + 7²","= 1000000 + 14000 + 49","= 1014049"],a:"1,014,049"}
+    ]},
+    {num:"04",title:"Simplification by Substitution",concept:"If a long expression matches a known identity pattern, replace parts with simple letters. Then the identity does all the heavy lifting for you!",
+    formulas:["a² + 2ab + b² = (a+b)²","a² − 2ab + b² = (a−b)²","a² − b² = (a+b)(a−b)"],meanings:["Recognize the pattern, substitute","Same pattern with minus in middle","Difference of squares identity"],
+    vis:"substitution",
+    ex:{q:"Simplify p² + 2pq + q²",steps:["Recognize: this matches a² + 2ab + b²","Where a = p, b = q","∴ p² + 2pq + q² = (p + q)²"],ans:"(p + q)²"},
+    qs:[
+      {q:"(5x+7y+3z)² + 2(7x−7y−3z)(5x+7y+3z) + (7x−7y−3z)²?",h:"Spot the pattern a² + 2ab + b²",s:["Let a = 5x+7y+3z, b = 7x−7y−3z","= a² + 2ba + b² = (a+b)²","= (5x+7y+3z + 7x−7y−3z)² = (12x)²","= 144x²"],a:"144x²"},
+      {q:"(7p+3q−5r)² − 2(7p+3q−5r)(8p−4q−5r) + (8p−4q−5r)²?",h:"This matches a² − 2ab + b² = (a−b)²",s:["Let a = 7p+3q−5r, b = 8p−4q−5r","= (a−b)² = (7p+3q−5r − 8p+4q+5r)²","= (−p+7q)² = (7q−p)²"],a:"(7q − p)²"},
+      {q:"Compute: 6.35×6.35 + 2×6.35×3.65 + 3.65×3.65",h:"Recognize a² + 2ab + b² with a=6.35, b=3.65",s:["= (6.35)² + 2×6.35×3.65 + (3.65)²","= (6.35 + 3.65)² = (10)²","= 100"],a:"100"},
+      {q:"(2345² − 759²) ÷ (2345 − 759) = ?",h:"Use a² − b² = (a+b)(a−b)",s:["= (2345+759)(2345−759) ÷ (2345−759)","= 2345 + 759","= 3104"],a:"3104"}
+    ]},
+    {num:"05",title:"Finding Values Using Corollaries",concept:"If some values are given, we can use identities to find unknown expressions without solving for each variable separately.",
+    formulas:["(a+b)² = (a−b)² + 4ab","(a−b)² = (a+b)² − 4ab"],meanings:["Find (a+b) when (a−b) and ab are given","Find (a−b) when (a+b) and ab are given"],
+    vis:"corollary",
+    ex:{q:"If a − b = 1 and ab = 2, find (a + b)²",steps:["(a+b)² = (a−b)² + 4ab","= 1² + 4×2","= 1 + 8 = 9"],ans:"9"},
+    qs:[
+      {q:"If x − y = 2 and xy = 24, find (x + y).",h:"Use (x+y)² = (x−y)² + 4xy",s:["(x+y)² = (x−y)² + 4xy = 4 + 96 = 100","x + y = ±√100 = ±10"],a:"±10"},
+      {q:"If a − b = 4 and ab = 60, find (a + b).",h:"Use (a+b)² = (a−b)² + 4ab",s:["(a+b)² = 16 + 240 = 256","a + b = ±√256 = ±16"],a:"±16"},
+      {q:"If a + b = 9m and ab = 18m², find (a − b).",h:"Use (a−b)² = (a+b)² − 4ab",s:["(a−b)² = (9m)² − 4×18m² = 81m² − 72m² = 9m²","a − b = ±3m"],a:"±3m"}
+    ]},
+    {num:"06",title:"Repeated Squaring",concept:"Sometimes one identity leads to another. We square once, simplify, and square again to reach a higher power expression.",
+    formulas:["(a ± b)² twice gives a⁴ + 1/a⁴"],meanings:["Square once → a² + 1/a². Square again → a⁴ + 1/a⁴"],
+    vis:"repeated",
+    ex:{q:"If t + 1/t = 3, find t² + 1/t²",steps:["Square both sides: (t + 1/t)² = 9","t² + 2×t×(1/t) + 1/t² = 9","t² + 2 + 1/t² = 9","t² + 1/t² = 7"],ans:"7"},
+    qs:[
+      {q:"If x − 1/x = 4, prove x⁴ + 1/x⁴ = 322",h:"Square once → x² + 1/x². Square again → x⁴ + 1/x⁴",s:["(x−1/x)² = 16 → x² − 2 + 1/x² = 16 → x² + 1/x² = 18","(x²+1/x²)² = 324 → x⁴ + 2 + 1/x⁴ = 324 → x⁴ + 1/x⁴ = 322 ✓"],a:"322 ✓ Proved"},
+      {q:"If 2x + 2/x = 3, find x² + 1/x².",h:"First divide by 2 to get x + 1/x = 3/2, then square",s:["x + 1/x = 3/2","(x+1/x)² = 9/4 → x² + 2 + 1/x² = 9/4","x² + 1/x² = 9/4 − 2 = 1/4"],a:"1/4"},
+      {q:"If a + 1/a = 2, show a² + 1/a² = a⁴ + 1/a⁴",h:"Square twice from a+1/a=2 and compare",s:["(a+1/a)² = 4 → a² + 2 + 1/a² = 4 → a² + 1/a² = 2","(a²+1/a²)² = 4 → a⁴ + 2 + 1/a⁴ = 4 → a⁴ + 1/a⁴ = 2","Both equal 2, so they are equal ✓"],a:"Equal ✓ Proved"}
+    ]},
+    {num:"07",title:"Factorisation and Proofs",concept:"Sometimes a complicated expression can be rewritten as a product of easier factors. This helps us find values or prove statements elegantly.",
+    formulas:["a² − b² = (a+b)(a−b)","a⁴+a²b²+b⁴ = (a²+ab+b²)(a²−ab+b²)"],meanings:["Difference of two squares","Sum of two bivariate squares factored"],
+    vis:"factorisation",
+    ex:{q:"Rewrite u² − v²",steps:["u² − v² = (u + v)(u − v)"],ans:"(u + v)(u − v)"},
+    qs:[
+      {q:"If a⁴+a²b²+b⁴=3 and a²+ab+b²=3, find a²+b².",h:"Factor the first expression using difference of squares",s:["a⁴+a²b²+b⁴ = (a²+ab+b²)(a²−ab+b²)","3 = 3×(a²−ab+b²) → a²−ab+b² = 1","(a²+ab+b²)+(a²−ab+b²) = 3+1 = 4","2(a²+b²) = 4 → a²+b² = 2"],a:"2"},
+      {q:"Prove: (a+b)⁴ − (a−b)⁴ = 8ab(a²+b²)",h:"Treat as difference of squares of squares",s:["= {(a+b)²}² − {(a−b)²}²","= {(a+b)²+(a−b)²}{(a+b)²−(a−b)²}","= {2(a²+b²)}{4ab}","= 8ab(a²+b²) ✓"],a:"Proved ✓"},
+      {q:"If a+b=√7 and a−b=√5, prove 8ab(a²+b²)=24",h:"Find a²+b² and ab separately",s:["a²+b² = [(a+b)²+(a−b)²]/2 = (7+5)/2 = 6","ab = [(a+b)²−(a−b)²]/4 = (7−5)/4 = 1/2","8ab(a²+b²) = 8×(1/2)×6 = 24 ✓"],a:"24 ✓ Proved"}
+    ]},
+    {num:"08",title:"Three-Variable Formulas",concept:"For three variables, identities connect sums, squares, and pairwise products. These are useful for fast value finding without needing each variable.",
+    formulas:["(a+b+c)² = a²+b²+c² + 2(ab+bc+ca)","a²+b²+c² = (a+b+c)² − 2(ab+bc+ca)"],meanings:["Find ab+bc+ca from sum and sum-of-squares","Find sum-of-squares from sum and products"],
+    vis:"threevars",
+    ex:{q:"If a+b+c=4 and a²+b²+c²=10, find ab+bc+ca",steps:["2(ab+bc+ca) = (a+b+c)² − (a²+b²+c²)","= 16 − 10 = 6","ab + bc + ca = 3"],ans:"3"},
+    qs:[
+      {q:"If a+b+c=15 and a²+b²+c²=83, find (ab+bc+ac).",h:"Use 2(ab+bc+ac) = (a+b+c)² − (a²+b²+c²)",s:["2(ab+bc+ac) = 225 − 83 = 142","ab+bc+ac = 71"],a:"71"},
+      {q:"If a+b+c=9 and ab+bc+ca=31, find a²+b²+c².",h:"Use a²+b²+c² = (a+b+c)² − 2(ab+bc+ca)",s:["= 81 − 2×31 = 81 − 62","= 19"],a:"19"},
+      {q:"If a²+b²+c²=9 and ab+bc+ca=8, find (a+b+c)².",h:"Use (a+b+c)² = a²+b²+c² + 2(ab+bc+ca)",s:["= 9 + 2×8 = 9 + 16","= 25"],a:"25"},
+      {q:"If a+b+c=2, ab+bc+ac=1, find (a+b)²+(b+c)²+(c+a)².",h:"Expand and group cleverly",s:["= 2(a²+b²+c²) + 2(ab+bc+ca)","a²+b²+c² = (2)²−2×1 = 2","= 2×2 + 2×1 = 6"],a:"6"},
+      {q:"If a+b+c=6 and a²+b²+c²=14, find (a−b)²+(b−c)²+(c−a)².",h:"Expand to get 2(a²+b²+c²) − 2(ab+bc+ca)",s:["ab+bc+ca = [(6)²−14]/2 = 22/2 = 11","= 2×14 − 2×11 = 28 − 22","= 6"],a:"6"}
+    ]},
+    {num:"09",title:"Recognising Perfect Square Patterns",concept:"Some long expressions are actually perfect squares in disguise. If we spot the pattern, the work becomes much shorter — substitute numbers instantly!",
+    formulas:["(a±b±c)² pattern recognition"],meanings:["Spot: squares of terms + cross products = perfect square trinomial"],
+    vis:"pattern",
+    ex:{q:"Recognize x² − 2xy + y²",steps:["This matches a² − 2ab + b²","Where a = x, b = y","So it equals (x − y)²"],ans:"(x − y)²"},
+    qs:[
+      {q:"If x=3,y=4,z=5, find 9x²+16y²+4z²−24xy−16yz+12zx.",h:"Spot (3x)²+(4y)²+(2z)²−2(3x)(4y)−2(4y)(2z)+2(3x)(2z) = (3x−4y+2z)²",s:["= (3x−4y+2z)² = (3×3−4×4+2×5)²","= (9−16+10)² = (3)²","= 9"],a:"9"}
+    ]},
+    {num:"10",title:"Difference of Two Squares Applications",concept:"Some products and expressions can be rewritten as the difference of two squares. This is useful for transformation and simplification.",
+    formulas:["ab = ((a+b)/2)² − ((a−b)/2)²","a² − b² = (a+b)(a−b)"],meanings:["Any product as difference of squares","Classic difference of squares"],
+    vis:"diffsquares",
+    ex:{q:"Express uv as a difference of two squares",steps:["uv = ((u+v)/2)² − ((u−v)/2)²"],ans:"((u+v)/2)² − ((u−v)/2)²"},
+    qs:[
+      {q:"Express (2x+3y)(4x−5y) as difference of squares.",h:"Let a=2x+3y, b=4x−5y. Use ab=((a+b)/2)²−((a−b)/2)²",s:["a+b = 6x−2y, a−b = −2x+8y","= ((6x−2y)/2)² − ((8y−2x)/2)²","= (3x−y)² − (4y−x)²"],a:"(3x−y)² − (4y−x)²"},
+      {q:"Express (a+2b)(3a+2c) as difference of squares.",h:"Let p=a+2b, q=3a+2c",s:["p+q = 4a+2b+2c, p−q = −2a+2b−2c","= ((4a+2b+2c)/2)² − ((−2a+2b−2c)/2)²","= (2a+b+c)² − (b−a−c)²"],a:"(2a+b+c)² − (b−a−c)²"},
+      {q:"Express x²+10x+24 as difference of squares.",h:"Complete the square first",s:["= x²+10x+25 − 1","= (x+5)² − 1²"],a:"(x+5)² − 1²"}
+    ]}
+  ]
+},
+{
+  tag:"Chapter 3.2", title:"Formulae of Cubes & Their Applications",
+  chips:["(a+b)³","(a−b)³","a³+b³","a³−b³","x+1/x","a+b+c=0","Corollary 9","Corollary 10"],
+  summary:[
+    {n:"(a+b)³",f:"a³+3a²b+3ab²+b³"},{n:"(a−b)³",f:"a³−3a²b+3ab²−b³"},
+    {n:"Corollary 9",f:"a³+b³=(a+b)³−3ab(a+b)"},{n:"Corollary 10",f:"a³−b³=(a−b)³+3ab(a−b)"},
+    {n:"Formula 8",f:"a³+b³=(a+b)(a²−ab+b²)"},{n:"Formula 9",f:"a³−b³=(a−b)(a²+ab+b²)"},
+    {n:"Reciprocal sum",f:"x³+1/x³=(x+1/x)³−3(x+1/x)"},{n:"Reciprocal diff",f:"x³−1/x³=(x−1/x)³+3(x−1/x)"},
+    {n:"Zero-sum identity",f:"a+b+c=0 → a³+b³+c³=3abc"},{n:"Rationalisation",f:"1/(√a+√b)=(√a−√b)/(a−b)"},
+  ],
+  lessons:[
+    {num:"01",title:"Cube of a Binomial",concept:"When a binomial is cubed, use the fixed pattern of four terms. The coefficients are 1, 3, 3, 1 — always.",
+    formulas:["(a+b)³ = a³ + 3a²b + 3ab² + b³","(a−b)³ = a³ − 3a²b + 3ab² − b³"],meanings:["Cube: first, 3×(first²×second), 3×(first×second²), cube of second","Same but alternate signs: +, −, +, −"],
+    vis:"binomial",
+    ex:{q:"Derive (a+b)³",steps:["(a+b)³ = (a+b)(a+b)²","= (a+b)(a²+2ab+b²)","= a³+2a²b+ab²+a²b+2ab²+b³","= a³ + 3a²b + 3ab² + b³"],ans:"a³ + 3a²b + 3ab² + b³"},
+    qs:[
+      {q:"Cube of (2x + 3y)?",h:"a=2x, b=3y → apply (a+b)³",s:["(2x)³ + 3(2x)²(3y) + 3(2x)(3y)² + (3y)³","= 8x³ + 36x²y + 54xy² + 27y³"],a:"8x³ + 36x²y + 54xy² + 27y³"},
+      {q:"Cube of (2x − y)?",h:"a=2x, b=y → apply (a−b)³",s:["(2x)³ − 3(2x)²(y) + 3(2x)(y)² − y³","= 8x³ − 12x²y + 6xy² − y³"],a:"8x³ − 12x²y + 6xy² − y³"},
+      {q:"Cube of (3x + 2y)?",h:"Direct (a+b)³ with a=3x, b=2y",s:["(3x)³ + 3(3x)²(2y) + 3(3x)(2y)² + (2y)³","= 27x³ + 54x²y + 36xy² + 8y³"],a:"27x³ + 54x²y + 36xy² + 8y³"},
+      {q:"Cube of (3x − 4y)?",h:"a=3x, b=4y → use (a−b)³",s:["(3x)³ − 3(3x)²(4y) + 3(3x)(4y)² − (4y)³","= 27x³ − 108x²y + 144xy² − 64y³"],a:"27x³ − 108x²y + 144xy² − 64y³"}
+    ]},
+    {num:"02",title:"Recognising Cube Patterns",concept:"Some expressions are already cube expansions in disguise. Spotting the pattern makes evaluation instant — just substitute!",
+    formulas:["(a+b)³ = a³+3a²b+3ab²+b³ → reverse to identify"],meanings:["Match coefficients and powers to find the base binomial"],
+    vis:"pattern",
+    ex:{q:"Recognise 8x³ + 36x²y + 54xy² + 27y³",steps:["8x³ = (2x)³  and  27y³ = (3y)³","Middle: 3(2x)²(3y)=36x²y ✓ and 3(2x)(3y)²=54xy² ✓","Pattern matches (a+b)³ with a=2x, b=3y"],ans:"(2x + 3y)³"},
+    qs:[
+      {q:"If x=37, find 8x³+72x²+216x+216.",h:"Spot (2x+6)³ pattern, then substitute",s:["8x³+72x²+216x+216 = (2x+6)³","= (2×37+6)³ = (80)³","= 512000"],a:"512000"},
+      {q:"If x=−2, find 27x³−54x²+36x−8.",h:"Spot (3x−2)³ pattern",s:["= (3x)³−3(3x)²(2)+3(3x)(4)−8 = (3x−2)³","= (3(−2)−2)³ = (−8)³","= −512"],a:"−512"},
+      {q:"If x=19, y=−12, find 8x³+36x²y+54xy²+27y³.",h:"This is (2x+3y)³",s:["= (2x+3y)³ = (2×19 + 3×(−12))³","= (38−36)³ = (2)³","= 8"],a:"8"}
+    ]},
+    {num:"03",title:"Difference and Sum of Cubes",concept:"Cubes can be rewritten using corollaries and factorisation. These are your most powerful tools for value-finding problems.",
+    formulas:["a³+b³ = (a+b)³ − 3ab(a+b)","a³−b³ = (a−b)³ + 3ab(a−b)","a³+b³ = (a+b)(a²−ab+b²)","a³−b³ = (a−b)(a²+ab+b²)"],meanings:["Corollary 9: find a³+b³ from sum & product","Corollary 10: find a³−b³ from diff & product","Formula 8: sum of cubes factorised","Formula 9: diff of cubes factorised"],
+    vis:"sumcubes",
+    ex:{q:"If a−b and ab are known, express a³−b³",steps:["a³−b³ = (a−b)³ + 3ab(a−b)","Plug in a−b and ab directly → done!"],ans:"(a−b)³ + 3ab(a−b)"},
+    qs:[
+      {q:"If x−y=8, xy=5, find x³−y³+8(x+y)².",h:"Use Corollary 10 + (x+y)²=(x−y)²+4xy",s:["x³−y³ = (x−y)³+3xy(x−y) = 512+120 = 632","(x+y)² = 64+20 = 84","Total = 632 + 8×84 = 632+672 = 1304"],a:"1304"},
+      {q:"If a−b=5, ab=36, find a³−b³.",h:"Corollary 10: a³−b³=(a−b)³+3ab(a−b)",s:["= 5³+3×36×5","= 125+540","= 665"],a:"665"},
+      {q:"If a+b=3, ab=2, find a²−ab+b² and a³+b³.",h:"a²−ab+b²=(a+b)²−3ab; then use Formula 8",s:["a²−ab+b² = 9−6 = 3","a³+b³ = (a+b)(a²−ab+b²) = 3×3 = 9"],a:"a²−ab+b²=3, a³+b³=9"}
+    ]},
+    {num:"04",title:"Values Using x + 1/x or x − 1/x",concept:"When a variable and its reciprocal are related, cube identities unlock higher powers instantly — no need to find x itself.",
+    formulas:["x³+1/x³ = (x+1/x)³ − 3(x+1/x)","x³−1/x³ = (x−1/x)³ + 3(x−1/x)"],meanings:["Corollary 9 with reciprocal pair","Corollary 10 with reciprocal pair"],
+    vis:"reciprocal",
+    ex:{q:"If m+1/m = a, find m³+1/m³",steps:["m³+1/m³ = (m+1/m)³ − 3·m·(1/m)·(m+1/m)","= a³ − 3a","(since m·(1/m) = 1 always)"],ans:"a³ − 3a"},
+    qs:[
+      {q:"If x−1/x = p, find x³−1/x³.",h:"Use Corollary 10: p³+3p",s:["x³−1/x³ = (x−1/x)³+3(x−1/x)","= p³+3p"],a:"p³ + 3p"},
+      {q:"If a−1/a=1, show a³−1/a³=4.",h:"Substitute into Corollary 10",s:["= (a−1/a)³+3(a−1/a) = 1+3 = 4 ✓"],a:"4 (proved)"},
+      {q:"If 2x−2/x=3, show 8(x³−1/x³)=63.",h:"Divide by 2 first: x−1/x=3/2, then apply",s:["x−1/x = 3/2","x³−1/x³ = (3/2)³+3(3/2) = 27/8+9/2 = 63/8","8×(63/8) = 63 ✓"],a:"63 (proved)"}
+    ]},
+    {num:"05",title:"Rationalisation and Cube Identities",concept:"Surd expressions become manageable once rationalised. Then cube identities take over — the surds often cancel beautifully.",
+    formulas:["Rationalise: 1/(√a+√b) = (√a−√b)/(a−b)","Then apply Corollary 9 or 10"],meanings:["Multiply top and bottom by the conjugate","Get a+1/a or a−1/a in simple surd form"],
+    vis:"surd",
+    ex:{q:"If a=√3+√2, find 1/a",steps:["1/a = 1/(√3+√2)","Multiply by (√3−√2)/(√3−√2):","= (√3−√2)/(3−2)","= √3 − √2"],ans:"√3 − √2"},
+    qs:[
+      {q:"If a=√3+√2, prove a³+1/a³=18√3.",h:"Rationalise → 1/a=√3−√2, so a+1/a=2√3",s:["1/a = √3−√2, so a+1/a = 2√3","a³+1/a³ = (2√3)³−3(2√3) = 24√3−6√3","= 18√3 ✓"],a:"18√3 (proved)"},
+      {q:"If a=√6+√5, find (a⁶−1)/a³.",h:"(a⁶−1)/a³ = a³−1/a³; rationalise first",s:["1/a = √6−√5 so a−1/a = 2√5","a³−1/a³ = (2√5)³+3(2√5) = 40√5+6√5","= 46√5"],a:"46√5"}
+    ]},
+    {num:"06",title:"Multi-Part Value Problems",concept:"Given x+y and xy, derive what you need step by step — x−y, individual values, then cube expressions. One formula at a time.",
+    formulas:["(x−y)² = (x+y)²−4xy","a³+b³ = (a+b)³−3ab(a+b)"],meanings:["Find x−y from sum and product","Find sum of cubes from sum and product"],
+    vis:"multipart",
+    ex:{q:"If x+y=5, xy=6, find x−y",steps:["(x−y)² = (x+y)²−4xy = 25−24 = 1","x−y = ±1"],ans:"x−y = ±1"},
+    qs:[
+      {q:"x+y=5, xy=6, x>y: (1) 2(x²+y²); (2) x³−y³−3(x²+y²); (3) x⁵+y⁵.",h:"Find x²+y², then x−y, then individual values",s:["x²+y² = 25−12 = 13, so 2(x²+y²)=26","x−y=1 (since x>y); x³−y³=1+18=19; 19−39=−20","x=3,y=2 → x⁵+y⁵=243+32=275"],a:"26; −20; 275"},
+      {q:"If a+b=5, ab=6, find a³+b³+4(a−b)².",h:"Find a³+b³ via Corollary 9, (a−b)² via identity",s:["a³+b³ = 125−90 = 35","(a−b)² = 25−24 = 1","35+4×1 = 39"],a:"39"}
+    ]},
+    {num:"07",title:"Three-Variable Identity: a+b+c=0",concept:"When three variables sum to zero, cube results simplify beautifully — including the elegant result a³+b³+c³=3abc.",
+    formulas:["If a+b+c=0, then a³+b³+c³=3abc"],meanings:["Since a+b=−c, cube both sides and simplify"],
+    vis:"threev",
+    ex:{q:"If a+b+c=0, prove a³+b³+c³=3abc",steps:["Since a+b+c=0, we have a+b=−c","Cube both sides: (a+b)³=(−c)³","a³+b³+3ab(a+b) = −c³","a³+b³+3ab(−c) = −c³","a³+b³−3abc = −c³","a³+b³+c³ = 3abc ✓"],ans:"3abc"},
+    qs:[
+      {q:"a+b+c=0: prove a³+b³+c³=3abc and (b+c)²/3bc+(c+a)²/3ca+(a+b)²/3ab=1.",h:"Use a+b=−c etc. in both parts",s:["Part 1: shown above (a+b=−c trick)","Part 2: b+c=−a, c+a=−b, a+b=−c","= a²/3bc+b²/3ca+c²/3ab = (a³+b³+c³)/3abc = 1 ✓"],a:"Both proved ✓"},
+      {q:"If p−q=r, show p³−q³−r³=3pqr.",h:"Convert to a+b+c=0 form",s:["p−q−r=0, so let a=p, b=−q, c=−r","a+b+c=0 → a³+b³+c³=3abc","p³+(−q)³+(−r)³ = 3p(−q)(−r)","p³−q³−r³ = 3pqr ✓"],a:"Proved ✓"}
+    ]},
+    {num:"08",title:"Exercise 3.2: Direct Applications",concept:"These school-style questions use all cube formulas directly. Group terms, identify the pattern, substitute — answer follows.",
+    formulas:["(a+b)³","(a−b)³","a³+b³=(a+b)(a²−ab+b²)","a³−b³=(a−b)(a²+ab+b²)"],meanings:["Expand cubes of polynomials","Simplify by reverse-recognising cube identities"],
+    vis:"exercise",
+    ex:{q:"Cube of (2x²+3y²)",steps:["(2x²)³+3(2x²)²(3y²)+3(2x²)(3y²)²+(3y²)³","= 8x⁶+36x⁴y²+54x²y⁴+27y⁶"],ans:"8x⁶+36x⁴y²+54x²y⁴+27y⁶"},
+    qs:[
+      {q:"Cube of (7m²−2n)?",h:"Use (a−b)³ with a=7m², b=2n",s:["(7m²)³−3(7m²)²(2n)+3(7m²)(2n)²−(2n)³","= 343m⁶−294m⁴n+84m²n²−8n³"],a:"343m⁶−294m⁴n+84m²n²−8n³"},
+      {q:"Simplify (7x+3b)³−(5x+3b)³−6x(7x+3b)(5x+3b)",h:"Let A=7x+3b, B=5x+3b. A−B=2x, so 6x=3(A−B)",s:["= A³−B³−3AB(A−B) = (A−B)³ = (2x)³","= 8x³"],a:"8x³"},
+      {q:"Simplify (x+y)(x²−xy+y²)+(y+z)(y²−yz+z²)+(z+x)(z²−zx+x²)",h:"Each factor is a sum of cubes formula",s:["(x+y)(x²−xy+y²)=x³+y³","(y+z)(y²−yz+z²)=y³+z³","(z+x)(z²−zx+x²)=z³+x³","Total = 2x³+2y³+2z³"],a:"2(x³+y³+z³)"},
+      {q:"Simplify (2x+3y−4z)³+(2x−3y+4z)³+12x{4x²−(3y−4z)²}",h:"Let A=2x+3y−4z, B=2x−3y+4z; A+B=4x",s:["= A³+B³+3AB(A+B) = (A+B)³ = (4x)³","= 64x³"],a:"64x³"}
+    ]},
+    {num:"09",title:"Higher-Power Follow-Up Problems",concept:"Cube identities combine with squaring to reach 4th, 5th, 6th powers. Build up step by step — each answer feeds the next.",
+    formulas:["Chain: square once → a²+1/a², square again → a⁴+1/a⁴","Cube: a+1/a → a³+1/a³ → a⁶+1/a⁶"],meanings:["Each identity is a stepping stone to the next power"],
+    vis:"highpow",
+    ex:{q:"If x−1/x=√3, find x²+1/x²",steps:["(x−1/x)²=3","x²−2+1/x²=3","x²+1/x²=5"],ans:"5"},
+    qs:[
+      {q:"x−1/x=√3: (1) prove x²−√3x=1; (2) prove 23(x²+1/x²)=5(x⁴+1/x⁴); (3) find x⁶+1/x⁶.",h:"Multiply by x; square twice; use cube formula at end",s:["(1) multiply by x: x²−1=√3x → x²−√3x=1 ✓","(2) x²+1/x²=5; x⁴+1/x⁴=23. Both sides = 115 ✓","(3) x⁶+1/x⁶=(4√7)²−2=112−2=110"],a:"110"}
+    ]}
+  ]
+}
+];
+
+// ─────────────────────────────────────────────
+//  SVG VISUALS
+// ─────────────────────────────────────────────
+const VISUALS={
+binomial:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="10" width="200" height="70" rx="10" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/><text x="110" y="42" text-anchor="middle" font-size="13" fill="#3C3489" font-weight="500">(a + b)</text><text x="110" y="62" text-anchor="middle" font-size="11" fill="#534AB7">first term + second term</text><text x="235" y="52" text-anchor="middle" font-size="20" fill="#888780">×</text><rect x="258" y="10" width="200" height="70" rx="10" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/><text x="358" y="42" text-anchor="middle" font-size="13" fill="#3C3489" font-weight="500">(a + b)</text><text x="358" y="62" text-anchor="middle" font-size="11" fill="#534AB7">same thing again</text></svg>`,
+trinomial:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="15" width="120" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="65" y="43" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">a²+b²+c²</text><text x="65" y="60" text-anchor="middle" font-size="10" fill="#0F6E56">square each</text><text x="138" y="52" text-anchor="middle" font-size="16" fill="#888780">+</text><rect x="152" y="15" width="165" height="60" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="234" y="43" text-anchor="middle" font-size="12" fill="#633806" font-weight="500">2ab+2bc+2ca</text><text x="234" y="60" text-anchor="middle" font-size="10" fill="#854F0B">twice each pair</text><text x="332" y="52" text-anchor="middle" font-size="16" fill="#888780">=</text><rect x="348" y="15" width="125" height="60" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/><text x="410" y="52" text-anchor="middle" font-size="12" fill="#3C3489" font-weight="500">(a+b+c)²</text></svg>`,
+mental:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="15" width="130" height="60" rx="8" fill="#FAECE7" stroke="#F0997B" stroke-width="1"/><text x="75" y="43" text-anchor="middle" font-size="14" fill="#712B13" font-weight="500">996</text><text x="75" y="62" text-anchor="middle" font-size="11" fill="#993C1D">= 1000 − 4</text><text x="160" y="52" text-anchor="middle" font-size="14" fill="#888780">→</text><rect x="178" y="15" width="185" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="270" y="43" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">(1000−4)² formula</text><text x="270" y="62" text-anchor="middle" font-size="11" fill="#0F6E56">no long multiplication!</text><text x="378" y="52" text-anchor="middle" font-size="14" fill="#888780">→</text><rect x="395" y="15" width="80" height="60" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/><text x="435" y="52" text-anchor="middle" font-size="13" fill="#3C3489" font-weight="500">992016</text></svg>`,
+substitution:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="15" width="165" height="60" rx="8" fill="#FAECE7" stroke="#F0997B" stroke-width="1"/><text x="87" y="40" text-anchor="middle" font-size="11" fill="#712B13" font-weight="500">Long expression</text><text x="87" y="60" text-anchor="middle" font-size="10" fill="#993C1D">let A = part1, B = part2</text><text x="186" y="52" text-anchor="middle" font-size="14" fill="#888780">→</text><rect x="203" y="15" width="130" height="60" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="268" y="40" text-anchor="middle" font-size="11" fill="#633806" font-weight="500">A² ± 2AB + B²</text><text x="268" y="60" text-anchor="middle" font-size="10" fill="#854F0B">match the pattern</text><text x="348" y="52" text-anchor="middle" font-size="14" fill="#888780">→</text><rect x="365" y="15" width="110" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="420" y="52" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">(A ± B)²</text></svg>`,
+corollary:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="15" width="140" height="60" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/><text x="75" y="40" text-anchor="middle" font-size="11" fill="#3C3489" font-weight="500">Given: a−b, ab</text><text x="75" y="60" text-anchor="middle" font-size="10" fill="#534AB7">two known values</text><text x="161" y="52" text-anchor="middle" font-size="14" fill="#888780">→</text><rect x="176" y="15" width="170" height="60" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="261" y="40" text-anchor="middle" font-size="11" fill="#633806" font-weight="500">(a+b)²=(a−b)²+4ab</text><text x="261" y="60" text-anchor="middle" font-size="10" fill="#854F0B">plug in &amp; solve</text><text x="361" y="52" text-anchor="middle" font-size="14" fill="#888780">→</text><rect x="376" y="15" width="100" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="426" y="52" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">Find a+b!</text></svg>`,
+repeated:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="20" width="100" height="50" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="55" y="48" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">a + 1/a</text><text x="118" y="48" text-anchor="middle" font-size="11" fill="#888780">square →</text><rect x="143" y="20" width="100" height="50" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="193" y="48" text-anchor="middle" font-size="12" fill="#633806" font-weight="500">a² + 1/a²</text><text x="256" y="48" text-anchor="middle" font-size="11" fill="#888780">square →</text><rect x="280" y="20" width="100" height="50" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/><text x="330" y="48" text-anchor="middle" font-size="12" fill="#3C3489" font-weight="500">a⁴ + 1/a⁴</text><text x="393" y="48" text-anchor="middle" font-size="11" fill="#888780">→ ...</text></svg>`,
+factorisation:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="15" width="165" height="60" rx="8" fill="#FAECE7" stroke="#F0997B" stroke-width="1"/><text x="87" y="43" text-anchor="middle" font-size="13" fill="#712B13" font-weight="500">a² − b²</text><text x="87" y="62" text-anchor="middle" font-size="10" fill="#993C1D">difference of squares</text><text x="186" y="52" text-anchor="middle" font-size="18" fill="#888780">=</text><rect x="203" y="15" width="270" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="338" y="43" text-anchor="middle" font-size="13" fill="#085041" font-weight="500">(a + b)(a − b)</text><text x="338" y="62" text-anchor="middle" font-size="10" fill="#0F6E56">product of sum &amp; difference</text></svg>`,
+threevars:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><circle cx="80" cy="45" r="30" fill="#EEEDFE" stroke="#AFA9EC" stroke-width="1"/><text x="80" y="40" text-anchor="middle" font-size="11" fill="#3C3489" font-weight="500">a+b+c</text><text x="80" y="56" text-anchor="middle" font-size="10" fill="#534AB7">= S</text><circle cx="240" cy="45" r="30" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="240" y="40" text-anchor="middle" font-size="11" fill="#633806" font-weight="500">a²+b²+c²</text><text x="240" y="56" text-anchor="middle" font-size="10" fill="#854F0B">= Q</text><circle cx="400" cy="45" r="30" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="400" y="40" text-anchor="middle" font-size="10" fill="#085041" font-weight="500">ab+bc+ca</text><text x="400" y="56" text-anchor="middle" font-size="10" fill="#0F6E56">= P</text><text x="163" y="48" text-anchor="middle" font-size="11" fill="#888780">S²−Q=2P</text></svg>`,
+pattern:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="230" height="70" rx="8" fill="#FAECE7" stroke="#F0997B" stroke-width="1"/><text x="120" y="38" text-anchor="middle" font-size="11" fill="#712B13" font-weight="500">expression → spot pattern!</text><text x="120" y="58" text-anchor="middle" font-size="10" fill="#993C1D">match squares &amp; cross-terms</text><text x="255" y="52" text-anchor="middle" font-size="16" fill="#888780">→</text><rect x="272" y="15" width="200" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="372" y="40" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">perfect cube / square!</text><text x="372" y="60" text-anchor="middle" font-size="10" fill="#0F6E56">substitute &amp; get answer</text></svg>`,
+diffsquares:`<svg viewBox="0 0 480 90" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="20" width="100" height="50" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="55" y="48" text-anchor="middle" font-size="13" fill="#633806" font-weight="500">ab</text><text x="118" y="48" text-anchor="middle" font-size="12" fill="#888780">=</text><rect x="138" y="15" width="180" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width="1"/><text x="228" y="38" text-anchor="middle" font-size="11" fill="#085041" font-weight="500">((a+b)/2)²</text><text x="228" y="57" text-anchor="middle" font-size="10" fill="#0F6E56">larger square</text><text x="332" y="48" text-anchor="middle" font-size="16" fill="#888780">−</text><rect x="350" y="15" width="125" height="60" rx="8" fill="#FAECE7" stroke="#F0997B" stroke-width="1"/><text x="412" y="38" text-anchor="middle" font-size="11" fill="#712B13" font-weight="500">((a−b)/2)²</text><text x="412" y="57" text-anchor="middle" font-size="10" fill="#993C1D">smaller square</text></svg>`,
+sumcubes:`<svg viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="110" height="60" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width=".8"/><text x="60" y="43" text-anchor="middle" font-size="13" fill="#633806" font-weight="500">a³ + b³</text><text x="128" y="43" font-size="13" fill="#888780" text-anchor="middle">=</text><rect x="148" y="10" width="152" height="60" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width=".8"/><text x="224" y="33" text-anchor="middle" font-size="11" fill="#3C3489" font-weight="500">(a+b)³ − 3ab(a+b)</text><text x="224" y="52" font-size="10" fill="#534AB7" text-anchor="middle">Corollary 9</text><text x="314" y="43" font-size="13" fill="#888780" text-anchor="middle">=</text><rect x="330" y="10" width="148" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width=".8"/><text x="404" y="33" text-anchor="middle" font-size="11" fill="#085041" font-weight="500">(a+b)(a²−ab+b²)</text><text x="404" y="52" font-size="10" fill="#0F6E56" text-anchor="middle">Formula 8</text></svg>`,
+reciprocal:`<svg viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="15" width="100" height="50" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width=".8"/><text x="55" y="43" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">x + 1/x</text><text x="118" y="43" font-size="11" fill="#888780" text-anchor="middle">cube →</text><rect x="140" y="15" width="100" height="50" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width=".8"/><text x="190" y="43" text-anchor="middle" font-size="12" fill="#633806" font-weight="500">x³+1/x³</text><text x="254" y="43" font-size="11" fill="#888780" text-anchor="middle">= a³−3a</text><rect x="290" y="15" width="185" height="50" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width=".8"/><text x="382" y="35" text-anchor="middle" font-size="11" fill="#3C3489" font-weight="500">since x·(1/x) = 1</text><text x="382" y="53" font-size="10" fill="#534AB7" text-anchor="middle">product of pair = 1 always</text></svg>`,
+surd:`<svg viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="10" width="135" height="60" rx="8" fill="#FBEAF0" stroke="#ED93B1" stroke-width=".8"/><text x="72" y="38" text-anchor="middle" font-size="12" fill="#72243E" font-weight="500">a = √3 + √2</text><text x="72" y="57" font-size="10" fill="#993556" text-anchor="middle">given surd</text><text x="153" y="46" font-size="13" fill="#888780" text-anchor="middle">→</text><rect x="168" y="10" width="155" height="60" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width=".8"/><text x="245" y="33" text-anchor="middle" font-size="11" fill="#633806" font-weight="500">rationalise: 1/a=√3−√2</text><text x="245" y="52" font-size="10" fill="#854F0B" text-anchor="middle">a+1/a = 2√3</text><text x="335" y="46" font-size="13" fill="#888780" text-anchor="middle">→</text><rect x="350" y="10" width="126" height="60" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width=".8"/><text x="413" y="38" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">cube formula!</text><text x="413" y="56" font-size="10" fill="#0F6E56" text-anchor="middle">18√3</text></svg>`,
+multipart:`<svg viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="15" width="118" height="50" rx="8" fill="#E6F1FB" stroke="#85B7EB" stroke-width=".8"/><text x="64" y="35" text-anchor="middle" font-size="11" fill="#0C447C" font-weight="500">x+y=5, xy=6</text><text x="64" y="53" font-size="10" fill="#185FA5" text-anchor="middle">given</text><text x="136" y="43" font-size="11" fill="#888780" text-anchor="middle">→</text><rect x="152" y="15" width="100" height="50" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width=".8"/><text x="202" y="43" text-anchor="middle" font-size="11" fill="#633806" font-weight="500">x−y = ±1</text><text x="265" y="43" font-size="11" fill="#888780" text-anchor="middle">→</text><rect x="280" y="15" width="110" height="50" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width=".8"/><text x="335" y="35" text-anchor="middle" font-size="11" fill="#3C3489" font-weight="500">x=3, y=2</text><text x="335" y="53" font-size="10" fill="#534AB7" text-anchor="middle">find individuals</text><text x="403" y="43" font-size="11" fill="#888780" text-anchor="middle">→</text><rect x="415" y="15" width="62" height="50" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width=".8"/><text x="446" y="43" text-anchor="middle" font-size="11" fill="#085041" font-weight="500">x⁵+y⁵</text></svg>`,
+threev:`<svg viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg"><circle cx="80" cy="40" r="28" fill="#EEEDFE" stroke="#AFA9EC" stroke-width=".8"/><text x="80" y="37" text-anchor="middle" font-size="11" fill="#3C3489" font-weight="500">a+b+c</text><text x="80" y="52" text-anchor="middle" font-size="10" fill="#534AB7">= 0</text><circle cx="240" cy="40" r="28" fill="#FAEEDA" stroke="#EF9F27" stroke-width=".8"/><text x="240" y="37" text-anchor="middle" font-size="11" fill="#633806" font-weight="500">a³+b³+c³</text><text x="240" y="52" text-anchor="middle" font-size="10" fill="#854F0B">= 3abc</text><line x1="110" y1="40" x2="210" y2="40" stroke="#888780" stroke-width=".8"/><text x="160" y="35" text-anchor="middle" font-size="10" fill="#888780">implies</text><circle cx="400" cy="40" r="28" fill="#E1F5EE" stroke="#5DCAA5" stroke-width=".8"/><text x="400" y="37" text-anchor="middle" font-size="11" fill="#085041" font-weight="500">3abc</text><text x="400" y="52" text-anchor="middle" font-size="10" fill="#0F6E56">elegant!</text><line x1="270" y1="40" x2="370" y2="40" stroke="#888780" stroke-width=".8"/></svg>`,
+exercise:`<svg viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="15" width="130" height="50" rx="8" fill="#FAECE7" stroke="#F0997B" stroke-width=".8"/><text x="70" y="38" text-anchor="middle" font-size="12" fill="#712B13" font-weight="500">long expression</text><text x="70" y="55" font-size="10" fill="#993C1D" text-anchor="middle">group terms</text><text x="148" y="43" font-size="13" fill="#888780" text-anchor="middle">→</text><rect x="163" y="15" width="145" height="50" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width=".8"/><text x="235" y="38" text-anchor="middle" font-size="12" fill="#3C3489" font-weight="500">A³ ± B³ pattern</text><text x="235" y="55" font-size="10" fill="#534AB7" text-anchor="middle">A−B = simple term</text><text x="321" y="43" font-size="13" fill="#888780" text-anchor="middle">→</text><rect x="336" y="15" width="140" height="50" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width=".8"/><text x="406" y="38" text-anchor="middle" font-size="12" fill="#085041" font-weight="500">(A±B)³</text><text x="406" y="55" font-size="10" fill="#0F6E56" text-anchor="middle">simple cube</text></svg>`,
+highpow:`<svg viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="18" width="80" height="44" rx="8" fill="#E1F5EE" stroke="#5DCAA5" stroke-width=".8"/><text x="45" y="43" text-anchor="middle" font-size="11" fill="#085041" font-weight="500">x−1/x</text><text x="98" y="43" font-size="10" fill="#888780" text-anchor="middle">sq →</text><rect x="118" y="18" width="80" height="44" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width=".8"/><text x="158" y="43" text-anchor="middle" font-size="11" fill="#633806" font-weight="500">x²+1/x²</text><text x="211" y="43" font-size="10" fill="#888780" text-anchor="middle">sq →</text><rect x="228" y="18" width="80" height="44" rx="8" fill="#EEEDFE" stroke="#AFA9EC" stroke-width=".8"/><text x="268" y="43" text-anchor="middle" font-size="11" fill="#3C3489" font-weight="500">x⁴+1/x⁴</text><text x="321" y="43" font-size="10" fill="#888780" text-anchor="middle">cb →</text><rect x="338" y="18" width="138" height="44" rx="8" fill="#E6F1FB" stroke="#85B7EB" stroke-width=".8"/><text x="407" y="43" text-anchor="middle" font-size="11" fill="#0C447C" font-weight="500">x⁶+1/x⁶=110</text></svg>`
+};
+
+// ─────────────────────────────────────────────
+//  STATE
+// ─────────────────────────────────────────────
+let curChapter=null, cur=0, stepTimers=[];
+
+function openChapter(ci){
+  curChapter=ci; cur=0;
+  document.getElementById('home').style.display='none';
+  const ls=document.getElementById('lesson');
+  ls.style.display='flex'; ls.style.flexDirection='column';
+  buildAll();
+  showLesson(0);
+}
+
+function goHome(){
+  document.getElementById('lesson').style.display='none';
+  document.getElementById('home').style.display='flex';
+  curChapter=null;
+}
+
+// ─────────────────────────────────────────────
+//  RENDER CHIPS + DOTS
+// ─────────────────────────────────────────────
+function renderChips(){
+  const ch=CHAPTERS[curChapter];
+  const row=document.getElementById('chipRow');
+  row.innerHTML=`<button class="back-btn" onclick="goHome()">←</button>`
+    +ch.chips.map((c,i)=>`<div class="fchip${cur===i?' on':''}">${c}</div>`).join('');
+}
+function renderDots(){
+  const ch=CHAPTERS[curChapter];
+  const total=ch.lessons.length;
+  document.getElementById('dotRow').innerHTML=
+    ch.lessons.map((_,i)=>`<button class="pdot${i===cur?' active':i<cur?' done':''}" style="width:${i===cur?24:9}px" onclick="go(${i})" title="${ch.lessons[i].title}"></button>`).join('')
+    +`<button class="pdot sum${cur===total?' active':cur>total-1?' done':''}" style="width:${cur===total?24:9}px" onclick="go(${total})" title="Summary"></button>`;
+}
+
+// ─────────────────────────────────────────────
+//  BUILD CARDS
+// ─────────────────────────────────────────────
+function buildAll(){
+  const ch=CHAPTERS[curChapter];
+  const lc=document.getElementById('lessonContent');
+  lc.innerHTML='';
+  ch.lessons.forEach((l,i)=>lc.appendChild(buildCard(l,i)));
+  lc.appendChild(buildSummary(ch));
+}
+
+function buildCard(l,i){
+  const d=document.createElement('div');
+  d.className='card'; d.id=`c-${i}`;
+  const fboxes=l.formulas.map((f,fi)=>`<div class="fbox fbox-${fi%5}"><div class="flbl">Formula${l.formulas.length>1?' '+(fi+1):''}</div><div class="ftext">${f}</div><div class="fmean">${l.meanings[fi]||''}</div></div>`).join('');
+  const steps=l.ex.steps.map((s,si)=>`<div class="step" id="s-${i}-${si}"><div class="sarr">${si===0?'→':'='}</div><div class="stxt">${s}</div></div>`).join('');
+  const qs=l.qs.map((q,qi)=>`<div class="qi" id="qi-${i}-${qi}"><button class="qh" onclick="toggleQ(${i},${qi})"><div class="qn">Q${qi+1}</div><div class="qtxt">${q.q}</div><div class="qtog">▾</div></button><div class="qb"><div class="qb-inner"><div class="qhint"><strong>Hint:</strong> ${q.h}</div>${q.s.map((st,si)=>`<div class="qstep"><div class="qsn">${si+1}.</div><div class="qst">${st}</div></div>`).join('')}<div class="qans">✓ ${q.a}</div></div></div></div>`).join('');
+  const ch=CHAPTERS[curChapter];
+  d.innerHTML=`
+    <div class="lhdr"><div class="lnum">${l.num}</div><div><div class="ltitle">${l.title}</div><div class="lconcept">${l.concept}</div></div></div>
+    ${fboxes}
+    <div class="vis">${VISUALS[l.vis]||''}</div>
+    <div class="ex-box"><div class="ex-lbl">Worked Example</div><div class="ex-q">${l.ex.q}</div>${steps}<div class="step" id="s-${i}-ans"><div class="sarr"></div><div><span class="abadge">✓ ${l.ex.ans}</span></div></div></div>
+    <div class="qlbl">Practice Questions (${l.qs.length})</div>
+    ${qs}
+    <div class="nav">
+      <button class="nbtn" onclick="go(${i-1})" ${i===0?'disabled':''}>← Previous</button>
+      <button class="nbtn pri" onclick="go(${i+1})">${i===ch.lessons.length-1?'Summary →':'Next Lesson →'}</button>
+    </div>`;
+  return d;
+}
+
+function buildSummary(ch){
+  const d=document.createElement('div');
+  d.className='card'; d.id=`c-${ch.lessons.length}`;
+  d.innerHTML=`<div class="sum">
+    <div class="sum-ico">✓</div>
+    <h2>${ch.tag} Complete!</h2>
+    <p>${ch.title}</p>
+    <div class="fgrid">${ch.summary.map(s=>`<div class="fsc"><div class="fn">${s.n}</div><div class="ff">${s.f}</div></div>`).join('')}</div>
+    <div class="sum-nav">
+      <button class="nbtn" onclick="go(${ch.lessons.length-1})">← Review Last Lesson</button>
+      <button class="nbtn pri" onclick="go(0)">↩ Start Over</button>
+      <button class="nbtn" style="background:#E1F5EE;border-color:#5DCAA5;color:#085041" onclick="goHome()">← Chapters</button>
+    </div>
+  </div>`;
+  return d;
+}
+
+// ─────────────────────────────────────────────
+//  ANIMATE STEPS
+// ─────────────────────────────────────────────
+function animSteps(idx){
+  stepTimers.forEach(clearTimeout); stepTimers=[];
+  const l=CHAPTERS[curChapter].lessons[idx];
+  if(!l) return;
+  const total=l.ex.steps.length+1;
+  for(let i=0;i<total;i++){
+    const id=i<l.ex.steps.length?`s-${idx}-${i}`:`s-${idx}-ans`;
+    stepTimers.push(setTimeout(()=>{const e=document.getElementById(id);if(e)e.classList.add('vis2');},i*380));
+  }
+}
+
+// ─────────────────────────────────────────────
+//  NAVIGATION
+// ─────────────────────────────────────────────
+function showLesson(idx){
+  const ch=CHAPTERS[curChapter];
+  document.querySelectorAll('.card').forEach((c,i)=>c.classList.toggle('active',i===idx));
+  cur=idx; renderChips(); renderDots();
+  if(idx<ch.lessons.length) animSteps(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function go(idx){
+  const max=CHAPTERS[curChapter].lessons.length;
+  if(idx<0||idx>max) return;
+  showLesson(idx);
+}
+function toggleQ(li,qi){
+  document.getElementById(`qi-${li}-${qi}`).classList.toggle('open');
+}
+</script>
+</body>
+</html>
